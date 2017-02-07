@@ -17,15 +17,13 @@ def get_DNS_servers(website):
     dns_servers = list(set(dns_servers))
     
     
-    # create dns_servers txt file and populate with dns info	
-    subprocess.Popen("touch dns_servers.txt", shell=True)
     i = 0
     for dns_server in dns_servers:
         if i == 0:
-            subprocess.Popen("echo DNS recon info on %s > dns_servers.txt" % website, shell=True);
-            subprocess.Popen("echo %s >> dns_servers.txt" % dns_server, shell=True)
+            subprocess.call("echo DNS recon info on %s > dns_servers.txt" % website, shell=True);
+            subprocess.call("echo %s >> dns_servers.txt" % dns_server, shell=True)
         else:
-            subprocess.Popen("echo %s >> dns_servers.txt" % dns_server, shell=True)
+            subprocess.call("echo %s >> dns_servers.txt" % dns_server, shell=True)
         i = i + 1
 
     # remove temp.txt file
@@ -40,6 +38,7 @@ def get_IP_addresses(website):
 
     subprocess.call("echo %s IP address: > IPs.txt" % website, shell=True)
     subprocess.call("echo %s >> IPs.txt" % first_line, shell=True)
+
 
     # get the IP addresses for the websites DNS servers
     subprocess.call("whois %s > dns_temp.txt" % website, shell=True)
@@ -62,8 +61,25 @@ def get_IP_addresses(website):
     
     subprocess.call("rm temp.txt dns_temp.txt", shell=True)
 
+def get_email_addresses(website):
+    subprocess.call("whois %s > email_temp.txt" % website, shell=True)
+    with open("email_temp.txt", 'r') as f:
+        content = f.readlines()
+    
+    emails=[]
+    for line in content:
+        if "Email" in line:
+            line = line.strip()
+            emails.append(line)
+
+    subprocess.call("echo %s Email Addresses: > emails.txt" % website, shell=True)
+    for email in emails:
+        subprocess.call("echo %s >> emails.txt" % email, shell=True)
+
+    subprocess.call("rm email_temp.txt", shell=True)
+
 def get_recon_method():
-    recon_method = raw_input("Select one of the folloing reconnaisance options: \n1)IP Addresses\n2)DNS Servers\n3)Public Files\n")
+    recon_method = raw_input("Select one of the folloing reconnaisance options: \n1)IP Addresses\n2)DNS Servers\n3)Email Addresses\n")
     return recon_method
 
 def main():
@@ -73,11 +89,13 @@ def main():
 
     if recon_method == "1":
         get_IP_addresses(website)
+        subprocess.Popen("echo IP reconsaissance successful!\necho \"IPs.txt\" created", shell=True)
     elif recon_method == "2":
         get_DNS_servers(website)
         subprocess.Popen("echo DNS reconsaissance successful!\necho \"dns_servers.txt\" created", shell=True)
     elif recon_method == "3":
-        get_public_files(website)
+        get_email_addresses(website)
+        subprocess.Popen("echo email reconsaissance successful!\necho \"emails.txt\" created", shell=True)
     else: 
         get_recon_method()
     
