@@ -139,19 +139,38 @@ def get_email_addresses(website):
 
 """
 def main():
+
+    helpMessage = ("To use this command, call in the following format:\n"+
+                   "\trecon.py -e google.com\n\n"+
+                   "The following options are available:\n"+
+                   "\t-d\tgather DNS information\n"+
+                   "\t-e\tgather email addresses\n"+
+                   "\t-i\tgather IP addresses\n\n"+
+                   "This information is gathered on the second provided\n"+
+                   "argument, which is a website address. If no options\n"+
+                   "and only a URL is provided, then all options will be\n"+
+                   "used. If no arguments are provided, then the script\n"+
+                   "will not run.")
+    usageMessage = ("Invalid usage!\n"+
+                    "Usage: recon.py -[dei] [url]\n"+
+                    "Example: recon.py -d amazon.com\n"+
+                    "Type 'recon.py help' for more information.")
+
     if len(sys.argv) < 2 or len(sys.argv) > 3:
-        print("Invalid usage!")
-        print("Usage: recon -[dei] [url]"+"\n"+
-              "Example: recon -d amazon.com")
+        print(usageMessage)
         return
     else:
         if len(sys.argv) == 2: # Only the URL was provided, capture all info
-            get_IP_addresses(sys.argv[-1])
-            get_DNS_servers(sys.argv[-1])
-            get_email_addresses(sys.argv[-1])
-            subprocess.Popen("echo IP reconsaissance successful!\necho \"IPs.txt\" created", shell=True)
-            subprocess.Popen("echo DNS reconsaissance successful!\necho \"dns_servers.txt\" created", shell=True)
-            subprocess.Popen("echo email reconsaissance successful!\necho \"emails.txt\" created", shell=True)
+            if sys.argv[1].lower() == "help":
+                print(helpMessage)
+                return
+            else:    
+                get_IP_addresses(sys.argv[-1])
+                get_DNS_servers(sys.argv[-1])
+                get_email_addresses(sys.argv[-1])
+                subprocess.Popen("echo IP reconsaissance successful!\necho \"IPs.txt\" created", shell=True)
+                subprocess.Popen("echo DNS reconsaissance successful!\necho \"dns_servers.txt\" created", shell=True)
+                subprocess.Popen("echo email reconsaissance successful!\necho \"emails.txt\" created", shell=True)
 
         elif sys.argv[1].lower() == "-i":
             get_IP_addresses(sys.argv[-1])
@@ -163,9 +182,8 @@ def main():
             get_email_addresses(sys.argv[-1])
             subprocess.Popen("echo email reconsaissance successful!\necho \"emails.txt\" created", shell=True)
         else: 
-            print("Unrecognized operand!")
-            print("Usage: recon -[dei] [url]"+"\n"+
-                  "Example: recon -d amazon.com")
+            print(usageMessage)
+            return
     
 
 if __name__ == "__main__":
