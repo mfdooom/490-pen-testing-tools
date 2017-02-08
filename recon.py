@@ -1,9 +1,11 @@
+#!/usr/bin/python
+
 """
 NAME
     recon.py - Reconnaissance tool for Penetration Testing
 
 SYNOPSIS
-    recon [-eidp] [url]
+    recon [-dei] [url]
 
 DESCRIPTION
     This is a script which streamlines a number of steps in
@@ -11,6 +13,10 @@ DESCRIPTION
     for the input of a flag and an URL which will be used to
     gather information about a website, where the flag determines
     what information is gathered.
+
+REQUIREMENTS
+    This script is intended to be run with Python 2.7. It is not compatible
+    with Python 3 and above. 
 
 OPTIONS
     If only a URL is entered, the command will return an aggregated list
