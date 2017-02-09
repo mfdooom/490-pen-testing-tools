@@ -4,7 +4,7 @@
 recon.py - Reconnaissance tool for Penetration Testing  
   
 ####SYNOPSIS  
-recon [-dei] [url]  
+recon [-dein] [url]  
   
 ####DESCRIPTION
 This is a script which streamlines a number of steps in
@@ -15,7 +15,8 @@ what information is gathered.
   
 ####REQUIREMENTS  
 This script is intended to be run with Python 2.7. It is not compatible  
-with Python 3 and above.   
+with Python 3 and above. It is preferable to run the script on a Linux
+operating system such as Kali Linux.   
   
 ####OPTIONS  
 If only a URL is entered, the command will return an aggregated list  
@@ -32,6 +33,9 @@ command will do nothing else.
 
     -i          Return information about IP addresses associated with
                 the given URL.
+
+    -n          Return information about names associated with the given
+                URL.
     
 ####EXAMPLES  
 recon.py -i google.com  

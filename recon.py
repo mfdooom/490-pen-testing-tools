@@ -16,7 +16,8 @@ DESCRIPTION
 
 REQUIREMENTS
     This script is intended to be run with Python 2.7. It is not compatible
-    with Python 3 and above. 
+    with Python 3 and above. It is preferable to run the script on a Linux
+    operating system such as Kali Linux.   
 
 OPTIONS
     If only a URL is entered, the command will return an aggregated list
@@ -34,10 +35,13 @@ OPTIONS
         -i          Return information about IP addresses associated with
                     the given URL.
 
+        -n          Return information about names associated with the given
+                    URL.
+
 EXAMPLES
     recon.py -i google.com
     recon.py -d apple.com
-    recon.py -p amazon.com
+    recon.py -n amazon.com
 
 AUTHORS
     Patrick Knight
@@ -142,23 +146,43 @@ def get_email_addresses(website):
 
 
 """
+"""
+def get_Names(website):
+    subprocess.call("whois %s > name_temp.txt" % website, shell=True)
+    with open("name_temp.txt", 'r') as f:
+        content = f.readlines()
+
+    names = []
+    for line in content:
+        if "Name" in line:
+            line = line.strip()
+            names.append(line)
+
+    subprocess.call("echo %s Names: > names.txt" % website, shell=True)
+    for name in names:
+        subprocess.call("echo %s >> names.txt" % name, shell=True)
+
+    subprocess.call("rm email_temp.txt", shell=True)
+
+"""
 
 """
 def main():
 
-    helpMessage = ("To use this command, call in the following format:\n"+
+    helpMessage = ("To use this command, call in the following format:\n\n"+
                    "\trecon.py -e google.com\n\n"+
-                   "The following options are available:\n"+
+                   "The following options are available:\n\n"+
                    "\t-d\tgather DNS information\n"+
                    "\t-e\tgather email addresses\n"+
-                   "\t-i\tgather IP addresses\n\n"+
+                   "\t-i\tgather IP addresses\n"+
+                   "\t-i\tgather names\n\n"+
                    "This information is gathered on the second provided\n"+
                    "argument, which is a website address. If no options\n"+
                    "and only a URL is provided, then all options will be\n"+
                    "used. If no arguments are provided, then the script\n"+
                    "will not run.")
     usageMessage = ("Invalid usage!\n"+
-                    "Usage: recon.py -[dei] [url]\n"+
+                    "Usage: recon.py -[dein] [url]\n"+
                     "Example: recon.py -d amazon.com\n"+
                     "Type 'recon.py help' for more information.")
 
@@ -174,19 +198,22 @@ def main():
                 get_IP_addresses(sys.argv[-1])
                 get_DNS_servers(sys.argv[-1])
                 get_email_addresses(sys.argv[-1])
-                subprocess.Popen("echo IP reconsaissance successful!\necho \"IPs.txt\" created", shell=True)
-                subprocess.Popen("echo DNS reconsaissance successful!\necho \"dns_servers.txt\" created", shell=True)
-                subprocess.Popen("echo email reconsaissance successful!\necho \"emails.txt\" created", shell=True)
+                print("IP reconnaissance successful!\n\"IPs.txt\" created")
+                print("DNS reconnaissance successful!\n\"dns_servers.txt\" created")
+                print("email reconnaissance successful!\n\"emails.txt\" created")
 
         elif sys.argv[1].lower() == "-i":
             get_IP_addresses(sys.argv[-1])
-            subprocess.Popen("echo IP reconsaissance successful!\necho \"IPs.txt\" created", shell=True)
+            print("IP reconnaissance successful!\n\"IPs.txt\" created")
         elif sys.argv[1].lower() == "-d":
             get_DNS_servers(sys.argv[-1])
-            subprocess.Popen("echo DNS reconsaissance successful!\necho \"dns_servers.txt\" created", shell=True)
+            print("DNS reconnaissance successful!\n\"dns_servers.txt\" created")
         elif sys.argv[1].lower() == "-e":
             get_email_addresses(sys.argv[-1])
-            subprocess.Popen("echo email reconsaissance successful!\necho \"emails.txt\" created", shell=True)
+            print("email reconnaissance successful!\n\"emails.txt\" created")
+        elif sys.argv[1].lower() == "-n":
+            get_Names(sys.argv[-1])
+            print("Name reconnaissance successful!\n\"names.txt\" created")
         else: 
             print(usageMessage)
             return
