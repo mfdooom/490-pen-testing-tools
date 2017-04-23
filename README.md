@@ -1,24 +1,24 @@
 # 490-pen-testing-tools
 
-####NAME  
+#### NAME ####  
 recon.py - Reconnaissance tool for Penetration Testing  
   
-####SYNOPSIS  
+#### SYNOPSIS ####  
 recon [-dein] [url]  
   
-####DESCRIPTION
+#### DESCRIPTION ####
 This is a script which streamlines a number of steps in
 the reconnaissance phase of a penetration test. It allows
 for the input of a flag and an URL which will be used to
 gather information about a website, where the flag determines
 what information is gathered.
   
-####REQUIREMENTS  
+#### REQUIREMENTS ####  
 This script is intended to be run with Python 2.7. It is not compatible  
 with Python 3 and above. It is preferable to run the script on a Linux
 operating system such as Kali Linux.   
   
-####OPTIONS  
+#### OPTIONS ####  
 If only a URL is entered, the command will return an aggregated list  
 of all available information concerning that URL.  
 
@@ -37,11 +37,11 @@ command will do nothing else.
     -n          Return information about names associated with the given
                 URL.
     
-####EXAMPLES  
+#### EXAMPLES ####   
 recon.py -i google.com  
 recon.py -d apple.com  
 recon.py -p amazon.com  
   
-####AUTHORS  
+#### AUTHORS ####  
 Patrick Knight  
 Logan Smith  
